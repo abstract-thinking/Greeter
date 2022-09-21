@@ -1,6 +1,7 @@
 package org.example.persistence;
 
 import lombok.extern.slf4j.Slf4j;
+import org.example.domain.Guest;
 import org.example.domain.Visit;
 
 import java.io.FileInputStream;
@@ -17,16 +18,16 @@ public class VisitStore {
 
     private static final String FILENAME = "visitors.ser";
 
-    private final Map<String, Visit> guestVisitMap;
+    private final Map<Guest, Visit> guestVisitMap;
 
     public VisitStore() {
         this.guestVisitMap = load();
     }
 
-    private Map<String, Visit> load() {
+    private Map<Guest, Visit> load() {
         try (FileInputStream fis = new FileInputStream(FILENAME);
              ObjectInputStream ois = new ObjectInputStream(fis)) {
-            return (Map<String, Visit>) ois.readObject();
+            return (Map<Guest, Visit>) ois.readObject();
         } catch (IOException ioe) {
             log.error("Error reading file", ioe);
         } catch (ClassNotFoundException cnfe) {
@@ -36,12 +37,12 @@ public class VisitStore {
         return new HashMap<>();
     }
 
-    public Optional<Visit> find(String firstName) {
-        return Optional.ofNullable(guestVisitMap.get(firstName));
+    public Optional<Visit> find(Guest guest) {
+        return Optional.ofNullable(guestVisitMap.get(guest));
     }
 
-    public boolean put(String firstName, Visit visit) {
-        Visit previousVisit = guestVisitMap.put(firstName, visit);
+    public boolean put(Guest guest, Visit visit) {
+        Visit previousVisit = guestVisitMap.put(guest, visit);
 
         return !visit.equals(previousVisit);
     }
@@ -50,7 +51,7 @@ public class VisitStore {
         save(guestVisitMap);
     }
 
-    private static void save(Map<String, Visit> guestVisitMap) {
+    private static void save(Map<Guest, Visit> guestVisitMap) {
         try (FileOutputStream fos = new FileOutputStream(FILENAME);
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
             oos.writeObject(guestVisitMap);

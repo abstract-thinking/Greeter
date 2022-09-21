@@ -1,5 +1,6 @@
 package org.example.control;
 
+import org.example.domain.Guest;
 import org.example.domain.Visit;
 import org.example.persistence.VisitStore;
 
@@ -13,32 +14,32 @@ public class Greeter {
         this.visitStore = requireNonNull(visitStore);
     }
 
-    public String greet(String firstName) {
-        final Visit visit = findGuest(firstName);
+    public String greet(Guest guest) {
+        final Visit visit = find(guest);
 
         visit.newVisit();
 
-        return greet(firstName, visit);
+        return greet(visit, guest);
     }
 
-    private Visit findGuest(String firstName) {
-        return visitStore.find(firstName).orElseGet(() -> createAndStoreVisit(firstName));
+    private Visit find(Guest guest) {
+        return visitStore.find(guest).orElseGet(() -> createAndStoreVisit(guest));
     }
 
-    private Visit createAndStoreVisit(String firstName) {
+    private Visit createAndStoreVisit(Guest guest) {
         final Visit visit = new Visit();
-        visitStore.put(firstName, visit);
+        visitStore.put(guest, visit);
 
         return visit;
     }
 
-    private static String greet(String firstName, Visit visit) {
+    private static String greet(Visit visit, Guest guest) {
         if (visit.isFirst()) {
-            return "Hello, " + firstName + "!";
+            return "Hello, " + guest.firstName() + "!";
         } else if (visit.isSecond()) {
-            return "Welcome back, " + firstName + "!";
+            return "Welcome back, " + guest.firstName() + "!";
         } else {
-            String greeting = "Hello my good friend, " + firstName + "!";
+            String greeting = "Hello my good friend, " + guest.firstName() + "!";
             if (visit.isPlatinum()) {
                 greeting += " Congrats! You are now a platinum guest!";
             }

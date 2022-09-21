@@ -1,6 +1,7 @@
 package org.example;
 
 import com.github.javafaker.Faker;
+import org.example.domain.Guest;
 import org.example.domain.Visit;
 import org.example.persistence.VisitStore;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class VisitStoreTest {
 
-    private static final String FIRST_NAME = new Faker().name().firstName();
+    private static final Guest GUEST = new Guest(new Faker().name().firstName());
 
     private static final Visit VISIT = new Visit();
 
@@ -27,7 +28,7 @@ class VisitStoreTest {
 
     @Test
     void shouldAddVisit() {
-        boolean wasDifferent = visitStore.put(FIRST_NAME, VISIT);
+        boolean wasDifferent = visitStore.put(GUEST, VISIT);
 
         assertThat(wasDifferent).isTrue();
     }
@@ -36,27 +37,27 @@ class VisitStoreTest {
     void shouldAddSameVisit() {
         givenVisit();
 
-        boolean wasDifferent = visitStore.put(FIRST_NAME, VISIT);
+        boolean wasDifferent = visitStore.put(GUEST, VISIT);
 
         assertThat(wasDifferent).isFalse();
     }
 
     private void givenVisit() {
-        visitStore.put(FIRST_NAME, VISIT);
+        visitStore.put(GUEST, VISIT);
     }
 
     @Test
     void shouldFindVisit() {
         givenVisit();
 
-        Optional<Visit> visit = visitStore.find(FIRST_NAME);
+        Optional<Visit> visit = visitStore.find(GUEST);
 
         assertThat(visit).isPresent().get().isEqualTo(VISIT);
     }
 
     @Test
     void shouldNotFindVisit() {
-        Optional<Visit> visit = visitStore.find(FIRST_NAME.concat("BLAH"));
+        Optional<Visit> visit = visitStore.find(new Guest(new Faker().name().firstName()));
 
         assertThat(visit).isNotPresent();
     }
@@ -72,7 +73,7 @@ class VisitStoreTest {
         this.visitStore.save();
 
         VisitStore visitStore = new VisitStore();
-        Optional<Visit> visit = visitStore.find(FIRST_NAME);
+        Optional<Visit> visit = visitStore.find(GUEST);
 
         assertThat(visit).isPresent().get().isEqualTo(VISIT);
     }

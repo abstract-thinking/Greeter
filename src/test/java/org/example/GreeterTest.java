@@ -2,6 +2,7 @@ package org.example;
 
 import com.github.javafaker.Faker;
 import org.example.control.Greeter;
+import org.example.domain.Guest;
 import org.example.domain.Visit;
 import org.example.persistence.VisitStore;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +26,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class GreeterTest {
 
-    private String firstName;
+    private Guest guest;
 
     @Mock
     private VisitStore visitStore;
@@ -35,27 +36,27 @@ class GreeterTest {
 
     @BeforeEach
     public void generateFirstName() {
-        firstName = new Faker().name().firstName();
+        guest = new Guest(new Faker().name().firstName());
     }
 
     @Test
     void shouldGreetFirstTime() {
-        when(visitStore.find(firstName)).thenReturn(Optional.empty());
+        when(visitStore.find(guest)).thenReturn(Optional.empty());
 
-        final String greeting = greeter.greet(firstName);
+        final String greeting = greeter.greet(guest);
 
-        assertThat(greeting).isEqualTo("Hello, " + firstName + "!");
+        assertThat(greeting).isEqualTo("Hello, " + guest.firstName() + "!");
 
-        verify(visitStore).put(eq(firstName), any(Visit.class));
+        verify(visitStore).put(eq(guest), any(Visit.class));
     }
 
     @Test
     void shouldGreetSecondTime() {
-        when(visitStore.find(firstName)).thenReturn(Optional.of(new Visit(1)));
+        when(visitStore.find(guest)).thenReturn(Optional.of(new Visit(1)));
 
-        final String greeting = greeter.greet(firstName);
+        final String greeting = greeter.greet(guest);
 
-        assertThat(greeting).isEqualTo("Welcome back, " + firstName + "!");
+        assertThat(greeting).isEqualTo("Welcome back, " + guest.firstName() + "!");
 
         verifyNoNewGuestAdded();
     }
@@ -67,22 +68,22 @@ class GreeterTest {
     @ParameterizedTest
     @ValueSource(ints = {2, 23, 25})
     void shouldGreet(int currentVisits) {
-        when(visitStore.find(firstName)).thenReturn(Optional.of(new Visit(currentVisits)));
+        when(visitStore.find(guest)).thenReturn(Optional.of(new Visit(currentVisits)));
 
-        final String greeting = greeter.greet(firstName);
+        final String greeting = greeter.greet(guest);
 
-        assertThat(greeting).isEqualTo("Hello my good friend, " + firstName + "!");
+        assertThat(greeting).isEqualTo("Hello my good friend, " + guest.firstName() + "!");
 
         verifyNoNewGuestAdded();
     }
 
     @Test
     void shouldGreetTwentyFiveTime() {
-        when(visitStore.find(firstName)).thenReturn(Optional.of(new Visit(24)));
+        when(visitStore.find(guest)).thenReturn(Optional.of(new Visit(24)));
 
-        final String greeting = greeter.greet(firstName);
+        final String greeting = greeter.greet(guest);
 
-        assertThat(greeting).isEqualTo("Hello my good friend, " + firstName + "! Congrats! You are now a platinum guest!");
+        assertThat(greeting).isEqualTo("Hello my good friend, " + guest.firstName() + "! Congrats! You are now a platinum guest!");
 
         verifyNoNewGuestAdded();
     }
