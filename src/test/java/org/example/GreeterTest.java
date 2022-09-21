@@ -39,7 +39,7 @@ class GreeterTest {
     public void shouldGreetFirstTime() {
         when(guestStore.find(firstName)).thenReturn(Optional.empty());
 
-        final String greeting = greeter.createGreeting(firstName);
+        final String greeting = greeter.greet(firstName);
 
         assertThat(greeting).isEqualTo("Hello, " + firstName + "!");
 
@@ -50,7 +50,7 @@ class GreeterTest {
     public void shouldGreetSecondTime() {
         when(guestStore.find(firstName)).thenReturn(Optional.of(new Guest(firstName, 1)));
 
-        final String greeting = greeter.createGreeting(firstName);
+        final String greeting = greeter.greet(firstName);
 
         assertThat(greeting).isEqualTo("Welcome back, " + firstName + "!");
 
@@ -61,7 +61,7 @@ class GreeterTest {
     public void shouldGreetThirdTime() {
         when(guestStore.find(firstName)).thenReturn(Optional.of(new Guest(firstName, 2)));
 
-        final String greeting = greeter.createGreeting(firstName);
+        final String greeting = greeter.greet(firstName);
 
         assertThat(greeting).isEqualTo("Hello my good friend, " + firstName + "!");
 
@@ -72,7 +72,7 @@ class GreeterTest {
     public void shouldGreetTwentyFourTime() {
         when(guestStore.find(firstName)).thenReturn(Optional.of(new Guest(firstName, 23)));
 
-        final String greeting = greeter.createGreeting(firstName);
+        final String greeting = greeter.greet(firstName);
 
         assertThat(greeting).isEqualTo("Hello my good friend, "  + firstName + "!");
 
@@ -83,7 +83,7 @@ class GreeterTest {
     public void shouldGreetTwentyFiveTime() {
         when(guestStore.find(firstName)).thenReturn(Optional.of(new Guest(firstName, 24)));
 
-        final String greeting = greeter.createGreeting(firstName);
+        final String greeting = greeter.greet(firstName);
 
         assertThat(greeting).isEqualTo("Hello my good friend, " + firstName + "! Congrats! You are now a platinum guest!");
 
@@ -94,7 +94,7 @@ class GreeterTest {
     public void shouldGreetTwentySixTime() {
         when(guestStore.find(firstName)).thenReturn(Optional.of(new Guest(firstName, 25)));
 
-        final String greeting = greeter.createGreeting(firstName);
+        final String greeting = greeter.greet(firstName);
 
         assertThat(greeting).isEqualTo("Hello my good friend, " + firstName + "!");
 

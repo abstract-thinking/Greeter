@@ -16,7 +16,7 @@ public class GuestApplication {
         try (Scanner scanner = new Scanner(System.in)) {
             while (true) {
                 log.info("What's your name?");
-                String greeting = greeter.createGreeting(scanner.next());
+                String greeting = greeter.greet(scanner.next());
                 log.info((greeting));
             }
         }

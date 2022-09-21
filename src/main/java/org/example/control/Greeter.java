@@ -13,12 +13,12 @@ public class Greeter {
         this.guestStore = requireNonNull(guestStore);
     }
 
-    public String createGreeting(String firstName) {
+    public String greet(String firstName) {
         final Guest guest = findGuest(firstName);
 
         guest.newVisit();
 
-        return createGreeting(guest);
+        return greet(guest);
     }
 
     private Guest findGuest(String firstName) {
@@ -32,7 +32,7 @@ public class Greeter {
         return newGuest;
     }
 
-    private static String createGreeting(Guest guest) {
+    private static String greet(Guest guest) {
         if (guest.isFirstVisit()) {
             return "Hello, " + guest.getFirstName() + "!";
         } else if (guest.isSecondVisit()) {
