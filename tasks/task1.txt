@@ -1,0 +1,16 @@
+Ich bin Veranstalter von 2-3 Partys pro Woche, die von 50-100 Gästen
+besucht werden. Solche Partys veranstalte ich in 20-25 Wochen pro
+Jahr in den nächsten 1-2 Jahren. Die neue Version des Programms
+möchte ich auf meinem Laptop am Eingang der Partys laufen lassen.
+Jeder Gast soll darin seinen Namen eingeben und persönlich begrüßt
+werden. Wenn z.B. Roger das erste Mal eine dieser Partys besucht,
+wird er mit “Hello, Roger!” begrüßt. Kommt er zum zweiten Mal, heißt
+es aber “Welcome back, Roger!” Ab dem dritten Besuch lautet die
+Begrüßung “Hello my good friend, Roger!”. Und ist Roger schließlich
+das 25. Mal auf einer Party, ist einmalig der Zusatz auszugeben
+“Congrats! You are now a platinum guest!
+Ich erwarte, dass ich während der Nutzungsdauer des Programms
+immer denselben Laptop verwende. Der wird vor Party-Beginn hochgefahren, das Programm wird einmalig gestartet für den Abend und
+am Ende mit CTRL-C beendet. Eine Internetverbindung besteht am
+Veranstaltungsort leider nicht verlässlich.
+Können Sie das Programm in dieser Weise erweitern?
