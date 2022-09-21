@@ -1,11 +1,17 @@
 package org.example;
 
-import java.io.*;
+import lombok.extern.slf4j.Slf4j;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
-public class VisitorSaver {
+@Slf4j
+public class VisitorsFileHandler {
 
     private static final String FILENAME = "visitors.ser";
 
@@ -14,8 +20,7 @@ public class VisitorSaver {
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
             oos.writeObject(visitors);
         } catch (IOException ioe) {
-            System.err.println("Problem saving visitors");
-            ioe.printStackTrace();
+            log.error("Problem saving file", ioe);
         }
     }
 
@@ -24,11 +29,9 @@ public class VisitorSaver {
              ObjectInputStream ois = new ObjectInputStream(fis)) {
             return (Set<Visitor>) ois.readObject();
         } catch (IOException ioe) {
-            System.err.println("Error reading file");
-            ioe.printStackTrace();
+            log.error("Error reading file", ioe);
         } catch (ClassNotFoundException cnfe) {
-            System.err.println("Error loading VisitorGreeter");
-            cnfe.printStackTrace();
+            log.error("Error loading visitors", cnfe);
         }
 
         return new HashSet<>();
