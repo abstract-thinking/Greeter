@@ -1,7 +1,8 @@
 package org.example;
 
 import lombok.extern.slf4j.Slf4j;
-import org.example.control.GreeterCreator;
+import org.example.control.Greeter;
+import org.example.persistence.GuestStore;
 
 import java.util.Scanner;
 
@@ -9,14 +10,15 @@ import java.util.Scanner;
 public class GuestApplication {
 
     public static void main(String[] args) {
-        GreeterCreator greeterCreator = new GreeterCreator();
-        Runtime.getRuntime().addShutdownHook(new Thread(greeterCreator::save));
+        Greeter greeter = new Greeter(new GuestStore());
+        Runtime.getRuntime().addShutdownHook(new Thread(greeter::save));
 
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            log.info("What's your name?");
-            String greeting = greeterCreator.createGreeting(scanner.next());
-            log.info((greeting));
+        try (Scanner scanner = new Scanner(System.in)) {
+            while (true) {
+                log.info("What's your name?");
+                String greeting = greeter.createGreeting(scanner.next());
+                log.info((greeting));
+            }
         }
     }
 }

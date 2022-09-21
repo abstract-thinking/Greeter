@@ -14,14 +14,21 @@ public class Guest implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Getter
-    private final String name;
+    private final String firstName;
 
     private int visits;
 
-    public Guest(String name) {
-        this.name = name;
+    public Guest(String firstName) {
+        this.firstName = firstName;
         this.visits = 0;
     }
+
+    // Open for testing???
+    public Guest(String firstName, int visits) {
+        this.firstName = firstName;
+        this.visits = visits;
+    }
+
 
     public void newVisit() {
         ++visits;

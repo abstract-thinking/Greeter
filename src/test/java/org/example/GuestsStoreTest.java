@@ -1,35 +1,76 @@
 package org.example;
 
 import com.github.javafaker.Faker;
-import org.example.persistence.GuestStore;
 import org.example.domain.Guest;
-import org.junit.jupiter.api.*;
+import org.example.persistence.GuestStore;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class GuestsStoreTest {
 
     private static final Guest GUEST = new Guest(new Faker().name().firstName());
 
-    @Order(1)
-    @Test
-    public void shouldSaveGuests() {
-        Set<Guest> guests = new HashSet<>();
-        guests.add(GUEST);
+    private final GuestStore guestStore = new GuestStore();
 
-        assertDoesNotThrow(() -> GuestStore.save(guests));
+    @BeforeEach
+    public void clear() {
+        guestStore.clear();
     }
 
-    @Order(2)
+    @Test
+    public void shouldAddGuest() {
+        boolean wasAdd = guestStore.add(GUEST);
+
+        assertThat(wasAdd).isTrue();
+    }
+
+    @Test
+    public void shouldNotAddGuest() {
+        givenGuest();
+
+        boolean wasAdd = guestStore.add(GUEST);
+
+        assertThat(wasAdd).isFalse();
+    }
+
+    @Test
+    public void shouldFindGuest() {
+        givenGuest();
+
+        Optional<Guest> guest = guestStore.find(GUEST.getFirstName());
+
+        assertThat(guest).isPresent().get().isEqualTo(GUEST);
+    }
+
+    private void givenGuest() {
+        guestStore.add(GUEST);
+    }
+
+    @Test
+    public void shouldNotFindGuest() {
+        Optional<Guest> guest = guestStore.find(GUEST.getFirstName().concat("BLAH"));
+
+        assertThat(guest).isNotPresent();
+    }
+
+    @Test
+    public void shouldSaveGuests() {
+        assertDoesNotThrow(guestStore::save);
+    }
+
     @Test
     public void shouldLoadGuests() {
-        Set<Guest> guests = GuestStore.load();
+        givenGuest();
+        guestStore.save();
 
-        assertThat(guests).containsExactly(GUEST);
+        GuestStore guestStore = new GuestStore();
+        Optional<Guest> guest = guestStore.find(GUEST.getFirstName());
+
+        assertThat(guest).isPresent().get().isEqualTo(GUEST);
     }
 }
