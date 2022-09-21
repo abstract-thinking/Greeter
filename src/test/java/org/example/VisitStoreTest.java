@@ -33,7 +33,7 @@ class VisitStoreTest {
     }
 
     @Test
-    void shouldNotAddVisit() {
+    void shouldAddSameVisit() {
         givenVisit();
 
         boolean wasDifferent = visitStore.put(FIRST_NAME, VISIT);
