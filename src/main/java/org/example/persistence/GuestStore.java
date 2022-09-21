@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Slf4j
-public class VisitorsFileHandler {
+public class GuestStore {
 
     private static final String FILENAME = "visitors.ser";
 

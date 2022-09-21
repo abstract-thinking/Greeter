@@ -1,7 +1,7 @@
 package org.example.control;
 
 import org.example.domain.Guest;
-import org.example.persistence.VisitorsFileHandler;
+import org.example.persistence.GuestStore;
 
 import java.util.Optional;
 import java.util.Set;
@@ -11,7 +11,7 @@ public class GreeterCreator {
     private final Set<Guest> guests;
 
     public GreeterCreator() {
-        guests = VisitorsFileHandler.load();
+        guests = GuestStore.load();
     }
 
     public String createGreeting(String name) {
@@ -52,6 +52,6 @@ public class GreeterCreator {
     }
 
     public void save() {
-        VisitorsFileHandler.save(guests);
+        GuestStore.save(guests);
     }
 }

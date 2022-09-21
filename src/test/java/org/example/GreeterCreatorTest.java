@@ -2,7 +2,7 @@ package org.example;
 
 import com.github.javafaker.Faker;
 import org.example.control.GreeterCreator;
-import org.example.persistence.VisitorsFileHandler;
+import org.example.persistence.GuestStore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +10,7 @@ import java.util.HashSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class GuestGreeterTest {
+class GreeterCreatorTest {
 
     private String firstName;
 
@@ -18,7 +18,7 @@ class GuestGreeterTest {
 
     @BeforeEach
     public void setUp() {
-        VisitorsFileHandler.save(new HashSet<>());
+        GuestStore.save(new HashSet<>());
 
         firstName = new Faker().name().firstName();
 
