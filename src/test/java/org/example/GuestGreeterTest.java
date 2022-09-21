@@ -1,6 +1,8 @@
 package org.example;
 
 import com.github.javafaker.Faker;
+import org.example.control.GreeterCreator;
+import org.example.persistence.VisitorsFileHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,11 +10,11 @@ import java.util.HashSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class VisitorGreeterTest {
+class GuestGreeterTest {
 
     private String firstName;
 
-    private VisitorGreeter greeter;
+    private GreeterCreator greeter;
 
     @BeforeEach
     public void setUp() {
@@ -20,7 +22,7 @@ class VisitorGreeterTest {
 
         firstName = new Faker().name().firstName();
 
-        greeter = new VisitorGreeter();
+        greeter = new GreeterCreator();
     }
 
     @Test
@@ -34,7 +36,7 @@ class VisitorGreeterTest {
     private String simulateVisits(int visit) {
         String greeting = "";
         for (int i = 1; i <= visit; ++i) {
-            greeting = greeter.doGreeting(firstName);
+            greeting = greeter.createGreeting(firstName);
         }
 
         return greeting;

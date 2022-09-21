@@ -1,6 +1,7 @@
-package org.example;
+package org.example.persistence;
 
 import lombok.extern.slf4j.Slf4j;
+import org.example.domain.Guest;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -15,19 +16,19 @@ public class VisitorsFileHandler {
 
     private static final String FILENAME = "visitors.ser";
 
-    public static void save(Set<Visitor> visitors) {
+    public static void save(Set<Guest> guests) {
         try (FileOutputStream fos = new FileOutputStream(FILENAME);
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-            oos.writeObject(visitors);
+            oos.writeObject(guests);
         } catch (IOException ioe) {
             log.error("Problem saving file", ioe);
         }
     }
 
-    public static Set<Visitor> load() {
+    public static Set<Guest> load() {
         try (FileInputStream fis = new FileInputStream(FILENAME);
              ObjectInputStream ois = new ObjectInputStream(fis)) {
-            return (Set<Visitor>) ois.readObject();
+            return (Set<Guest>) ois.readObject();
         } catch (IOException ioe) {
             log.error("Error reading file", ioe);
         } catch (ClassNotFoundException cnfe) {

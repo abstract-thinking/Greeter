@@ -1,4 +1,4 @@
-package org.example;
+package org.example.domain;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 
 @EqualsAndHashCode
-public class Visitor implements Serializable {
+public class Guest implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -18,7 +18,7 @@ public class Visitor implements Serializable {
 
     private int visits;
 
-    public Visitor(String name) {
+    public Guest(String name) {
         this.name = name;
         this.visits = 0;
     }
