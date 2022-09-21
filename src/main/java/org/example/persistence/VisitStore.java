@@ -1,66 +1,66 @@
 package org.example.persistence;
 
 import lombok.extern.slf4j.Slf4j;
-import org.example.domain.Guest;
+import org.example.domain.Visit;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 @Slf4j
-public class GuestStore {
+public class VisitStore {
 
     private static final String FILENAME = "visitors.ser";
 
-    private final Set<Guest> guests;
+    private final Map<String, Visit> guestVisitMap;
 
-    public GuestStore() {
-        this.guests = load();
+    public VisitStore() {
+        this.guestVisitMap = load();
     }
 
-    private Set<Guest> load() {
+    private Map<String, Visit> load() {
         try (FileInputStream fis = new FileInputStream(FILENAME);
              ObjectInputStream ois = new ObjectInputStream(fis)) {
-            return (Set<Guest>) ois.readObject();
+            return (Map<String, Visit>) ois.readObject();
         } catch (IOException ioe) {
             log.error("Error reading file", ioe);
         } catch (ClassNotFoundException cnfe) {
             log.error("Error loading visitors", cnfe);
         }
 
-        return new HashSet<>();
+        return new HashMap<>();
     }
 
-    public Optional<Guest> find(String firstName) {
-        return guests.stream()
-                .filter(guest -> guest.getFirstName().equalsIgnoreCase(firstName))
-                .findFirst();
+    public Optional<Visit> find(String firstName) {
+        return Optional.ofNullable(guestVisitMap.get(firstName));
     }
 
-    public boolean add(Guest guest) {
-        return guests.add(guest);
+    public boolean put(String firstName, Visit visit) {
+        Visit previousVisit = guestVisitMap.put(firstName, visit);
+
+        return !visit.equals(previousVisit);
     }
 
     public void save() {
+        save(guestVisitMap);
+    }
+
+    private static void save(Map<String, Visit> guestVisitMap) {
         try (FileOutputStream fos = new FileOutputStream(FILENAME);
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-            oos.writeObject(guests);
+            oos.writeObject(guestVisitMap);
         } catch (IOException ioe) {
             log.error("Problem saving file", ioe);
         }
     }
 
+    // Open for testing
     public void clear() {
-        try (FileOutputStream fos = new FileOutputStream(FILENAME);
-             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-            oos.writeObject(new HashSet<>());
-        } catch (IOException ioe) {
-            log.error("Problem saving file", ioe);
-        }
+        save(new HashMap<>());
     }
 }

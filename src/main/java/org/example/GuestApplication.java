@@ -2,7 +2,7 @@ package org.example;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.control.Greeter;
-import org.example.persistence.GuestStore;
+import org.example.persistence.VisitStore;
 
 import java.util.Scanner;
 
@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class GuestApplication {
 
     public static void main(String[] args) {
-        Greeter greeter = new Greeter(new GuestStore());
+        Greeter greeter = new Greeter(new VisitStore());
         Runtime.getRuntime().addShutdownHook(new Thread(greeter::save));
 
         try (Scanner scanner = new Scanner(System.in)) {

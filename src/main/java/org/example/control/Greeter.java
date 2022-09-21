@@ -1,46 +1,45 @@
 package org.example.control;
 
-import org.example.domain.Guest;
-import org.example.persistence.GuestStore;
+import org.example.domain.Visit;
+import org.example.persistence.VisitStore;
 
 import static java.util.Objects.requireNonNull;
 
 public class Greeter {
 
-    private final GuestStore guestStore;
+    private final VisitStore visitStore;
 
-    public Greeter(GuestStore guestStore) {
-        this.guestStore = requireNonNull(guestStore);
+    public Greeter(VisitStore visitStore) {
+        this.visitStore = requireNonNull(visitStore);
     }
 
     public String greet(String firstName) {
-        final Guest guest = findGuest(firstName);
+        final Visit visit = findGuest(firstName);
 
-        guest.newVisit();
+        visit.newVisit();
 
-        return greet(guest);
+        return greet(firstName, visit);
     }
 
-    private Guest findGuest(String firstName) {
-        return guestStore.find(firstName)
-                .orElseGet(() -> createAndStoreNewGuest(firstName));
+    private Visit findGuest(String firstName) {
+        return visitStore.find(firstName).orElseGet(() -> createAndStoreVisit(firstName));
     }
 
-    private Guest createAndStoreNewGuest(String firstName) {
-        final Guest newGuest = new Guest(firstName);
-        guestStore.add(newGuest);
+    private Visit createAndStoreVisit(String firstName) {
+        final Visit visit = new Visit();
+        visitStore.put(firstName, visit);
 
-        return newGuest;
+        return visit;
     }
 
-    private static String greet(Guest guest) {
-        if (guest.isFirstVisit()) {
-            return "Hello, " + guest.getFirstName() + "!";
-        } else if (guest.isSecondVisit()) {
-            return "Welcome back, " + guest.getFirstName() + "!";
+    private static String greet(String firstName, Visit visit) {
+        if (visit.isFirst()) {
+            return "Hello, " + firstName + "!";
+        } else if (visit.isSecond()) {
+            return "Welcome back, " + firstName + "!";
         } else {
-            String greeting = "Hello my good friend, " + guest.getFirstName() + "!";
-            if (guest.isPlatinumVisit()) {
+            String greeting = "Hello my good friend, " + firstName + "!";
+            if (visit.isPlatinum()) {
                 greeting += " Congrats! You are now a platinum guest!";
             }
 
@@ -49,6 +48,6 @@ public class Greeter {
     }
 
     public void save() {
-        guestStore.save();
+        visitStore.save();
     }
 }
