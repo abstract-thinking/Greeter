@@ -26,7 +26,7 @@ public class Visit implements Serializable {
         this.visits =  visits;
     }
 
-    public void newVisit() {
+    public void attended() {
         ++visits;
     }
 

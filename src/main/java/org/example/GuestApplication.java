@@ -11,8 +11,9 @@ import java.util.Scanner;
 public class GuestApplication {
 
     public static void main(String[] args) {
-        Greeter greeter = new Greeter(new VisitStore());
-        Runtime.getRuntime().addShutdownHook(new Thread(greeter::save));
+        VisitStore visitStore = new VisitStore();
+        Greeter greeter = new Greeter(visitStore);
+        Runtime.getRuntime().addShutdownHook(new Thread(visitStore::save));
 
         try (Scanner scanner = new Scanner(System.in)) {
             while (true) {

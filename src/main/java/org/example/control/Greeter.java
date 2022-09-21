@@ -17,7 +17,7 @@ public class Greeter {
     public String greet(Guest guest) {
         final Visit visit = find(guest);
 
-        visit.newVisit();
+        visit.attended();
 
         return greet(visit, guest);
     }
@@ -46,9 +46,5 @@ public class Greeter {
 
             return greeting;
         }
-    }
-
-    public void save() {
-        visitStore.save();
     }
 }
