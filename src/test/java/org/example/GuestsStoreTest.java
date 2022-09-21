@@ -23,14 +23,14 @@ class GuestsStoreTest {
     }
 
     @Test
-    public void shouldAddGuest() {
+    void shouldAddGuest() {
         boolean wasAdd = guestStore.add(GUEST);
 
         assertThat(wasAdd).isTrue();
     }
 
     @Test
-    public void shouldNotAddGuest() {
+    void shouldNotAddGuest() {
         givenGuest();
 
         boolean wasAdd = guestStore.add(GUEST);
@@ -38,8 +38,12 @@ class GuestsStoreTest {
         assertThat(wasAdd).isFalse();
     }
 
+    private void givenGuest() {
+        guestStore.add(GUEST);
+    }
+
     @Test
-    public void shouldFindGuest() {
+    void shouldFindGuest() {
         givenGuest();
 
         Optional<Guest> guest = guestStore.find(GUEST.getFirstName());
@@ -47,24 +51,20 @@ class GuestsStoreTest {
         assertThat(guest).isPresent().get().isEqualTo(GUEST);
     }
 
-    private void givenGuest() {
-        guestStore.add(GUEST);
-    }
-
     @Test
-    public void shouldNotFindGuest() {
+    void shouldNotFindGuest() {
         Optional<Guest> guest = guestStore.find(GUEST.getFirstName().concat("BLAH"));
 
         assertThat(guest).isNotPresent();
     }
 
     @Test
-    public void shouldSaveGuests() {
+    void shouldSaveGuests() {
         assertDoesNotThrow(guestStore::save);
     }
 
     @Test
-    public void shouldLoadGuests() {
+    void shouldLoadGuests() {
         givenGuest();
         guestStore.save();
 

@@ -6,6 +6,8 @@ import lombok.Getter;
 import java.io.Serial;
 import java.io.Serializable;
 
+import static java.util.Objects.requireNonNull;
+
 
 @EqualsAndHashCode
 public class Guest implements Serializable {
@@ -19,14 +21,16 @@ public class Guest implements Serializable {
     private int visits;
 
     public Guest(String firstName) {
-        this.firstName = firstName;
-        this.visits = 0;
+        this(firstName, 0);
     }
 
     // Open for testing???
     public Guest(String firstName, int visits) {
-        this.firstName = firstName;
-        this.visits = visits;
+        this.firstName = requireNonNull(firstName);
+        if (visits < 0) {
+            throw new IllegalArgumentException("visits can not be negative");
+        }
+        this.visits =  visits;
     }
 
 

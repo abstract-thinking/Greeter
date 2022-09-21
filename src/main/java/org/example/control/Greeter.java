@@ -22,7 +22,8 @@ public class Greeter {
     }
 
     private Guest findGuest(String firstName) {
-        return guestStore.find(firstName).orElseGet(() -> createAndStoreNewGuest(firstName));
+        return guestStore.find(firstName)
+                .orElseGet(() -> createAndStoreNewGuest(firstName));
     }
 
     private Guest createAndStoreNewGuest(String firstName) {

@@ -12,8 +12,6 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import static java.util.Collections.emptySet;
-
 @Slf4j
 public class GuestStore {
 
